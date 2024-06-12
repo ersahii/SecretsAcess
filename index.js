@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 app.use(bodyParser.urlencoded({extended: true}));
 var userIsAuthorised = false;
 function userValidation(req , res , next){
-    if(req.body.username === "mirmehraj" && req.body.password === "Companyforesite@786"){
+    if(req.body["username"] === "mirmehraj" && req.body["password"] === "Companyforesite@786"){
         userIsAuthorised = true;
     }
     else {
@@ -19,10 +19,15 @@ function userValidation(req , res , next){
 app.use(userValidation);
 app.get("/", (req , res)=>{
     res.sendFile(_dirname + "/public/Login.html");
-})
-app.post("/check", (req , res)=>{
-    console.log(req.body)
-    res.sendFile(_dirname + "/public/secrets.html");
+    })
+    app.post("/check", (req , res)=>{
+        if(userIsAuthorised){
+            res.sendFile(_dirname + "/public/secrets.html");
+            }
+            else{
+        // res.sendFile(_dirname + "/public/Login.html");
+        res.redirect("/");
+    }     
 })
 
 
